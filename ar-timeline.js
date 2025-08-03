@@ -50,9 +50,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // Arrows
   leftArrow.addEventListener("click", () => {
     if (currentIndex > 0) scrollToItem(currentIndex - 1);
+    updateNav(currentIndex - 1);
   });
   rightArrow.addEventListener("click", () => {
     if (currentIndex < items.length - 1) scrollToItem(currentIndex + 1);
+updateNav(currentIndex + 1);
   });
 
   // Arrow bop animation
