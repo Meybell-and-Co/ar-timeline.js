@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const rightArrow = document.querySelector(".timeline-arrow-right");
   const barFill = document.querySelector(".timeline-progress-bar-fill");
   const dotsContainer = document.querySelector(".timeline-dots");
+  const scroller = document.querySelector(".timeline-scroller');
 
   // Generate dots
   dotsContainer.innerHTML = "";
@@ -31,11 +32,19 @@ document.addEventListener("DOMContentLoaded", () => {
   function scrollToItem(idx, smooth = true) {
     const item = items[idx];
     if (!item) return;
-    timeline.scrollTo({
-      left: item.offsetLeft - timeline.offsetLeft,
-      behavior: smooth ? "smooth" : "auto"
-    });
-    updateNav(idx);
+   const scrollerRect = scroller.getBoundingClientRect();
+  const itemRect = item.getBoundingClientRect();
+  const scrollLeft =
+    item.offsetLeft -
+    scroller.offsetLeft -
+    scrollerRect.width / 2 +
+    itemRect.width / 2;
+  scroller.scrollTo({
+    left: scrollLeft,
+    behavior: smooth ? "smooth" : "auto",
+  });
+  updateNav(idx);
+}
   }
 
   // Dot click
