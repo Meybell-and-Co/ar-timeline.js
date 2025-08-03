@@ -1,24 +1,19 @@
 document.addEventListener("DOMContentLoaded", () => {
   const scroller = document.querySelector(".timeline-content");
   const allItems = Array.from(document.querySelectorAll(".timeline-item"));
-  const realItems = allItems.filter(item => !item.classList.contains('timeline-buffer'));
-  const numRealItems = realItems.length;
+ // Gather only real items (no buffer)
+const allItems = Array.from(document.querySelectorAll(".timeline-item"));
+const realItems = allItems.filter(item => !item.classList.contains('timeline-buffer'));
+const numRealItems = realItems.length;
 
-  const leftArrow = document.querySelector(".timeline-arrow-left");
-  const rightArrow = document.querySelector(".timeline-arrow-right");
-  const barFill = document.querySelector(".timeline-progress-bar-fill");
-  const dotsContainer = document.querySelector(".timeline-dots");
-
-  // Generate dots for real cards only
-  dotsContainer.innerHTML = "";
-  realItems.forEach(() => {
-    const dot = document.createElement("div");
-    dot.className = "timeline-dot";
-    dotsContainer.appendChild(dot);
-  });
-  const dots = dotsContainer.querySelectorAll(".timeline-dot");
-
-  let realCurrentIndex = 0;
+// Generate dots for real cards only
+dotsContainer.innerHTML = "";
+realItems.forEach(() => {
+  const dot = document.createElement("div");
+  dot.className = "timeline-dot";
+  dotsContainer.appendChild(dot);
+});
+const dots = dotsContainer.querySelectorAll(".timeline-dot");
 
   function updateNav(idx) {
     dots.forEach((dot, i) => dot.classList.toggle("active", i === idx));
