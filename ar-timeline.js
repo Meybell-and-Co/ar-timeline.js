@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const scroller = document.querySelector(".timeline-scroller");
+  const scroller = document.querySelector(".timeline-content");
   const items = document.querySelectorAll(".timeline-item");
   const leftArrow = document.querySelector(".timeline-arrow-left");
   const rightArrow = document.querySelector(".timeline-arrow-right");
