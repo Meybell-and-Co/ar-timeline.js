@@ -1,11 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const timeline = document.querySelector(".timeline-content");
+  const scroller = document.querySelector(".timeline-scroller");
   const items = document.querySelectorAll(".timeline-item");
   const leftArrow = document.querySelector(".timeline-arrow-left");
   const rightArrow = document.querySelector(".timeline-arrow-right");
   const barFill = document.querySelector(".timeline-progress-bar-fill");
   const dotsContainer = document.querySelector(".timeline-dots");
-  const scroller = document.querySelector(".timeline-scroller');
 
   // Generate dots
   dotsContainer.innerHTML = "";
@@ -19,11 +18,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentIndex = 0;
 
   function updateNav(idx) {
-    // Highlight dots
     dots.forEach((dot, i) => dot.classList.toggle("active", i === idx));
-    // Fill progress bar
     if (barFill) barFill.style.width = ((idx) / (items.length - 1)) * 100 + "%";
-    // Arrow enable/disable
     leftArrow.setAttribute("aria-disabled", idx === 0 ? "true" : "false");
     rightArrow.setAttribute("aria-disabled", idx === items.length - 1 ? "true" : "false");
     currentIndex = idx;
@@ -32,19 +28,18 @@ document.addEventListener("DOMContentLoaded", () => {
   function scrollToItem(idx, smooth = true) {
     const item = items[idx];
     if (!item) return;
-   const scrollerRect = scroller.getBoundingClientRect();
-  const itemRect = item.getBoundingClientRect();
-  const scrollLeft =
-    item.offsetLeft -
-    scroller.offsetLeft -
-    scrollerRect.width / 2 +
-    itemRect.width / 2;
-  scroller.scrollTo({
-    left: scrollLeft,
-    behavior: smooth ? "smooth" : "auto",
-  });
-  updateNav(idx);
-}
+    const scrollerRect = scroller.getBoundingClientRect();
+    const itemRect = item.getBoundingClientRect();
+    const scrollLeft =
+      item.offsetLeft -
+      scroller.offsetLeft -
+      scrollerRect.width / 2 +
+      itemRect.width / 2;
+    scroller.scrollTo({
+      left: scrollLeft,
+      behavior: smooth ? "smooth" : "auto",
+    });
+    updateNav(idx);
   }
 
   // Dot click
@@ -64,22 +59,22 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".timeline-arrow").forEach(arrow => {
     arrow.addEventListener("click", function() {
       arrow.classList.remove("bopping");
-      void arrow.offsetWidth; // Force reflow
+      void arrow.offsetWidth;
       arrow.classList.add("bopping");
     });
   });
 
-  // Keyboard arrow navigation
+  // Keyboard navigation
   document.addEventListener("keydown", e => {
     if (e.key === "ArrowRight") rightArrow.click();
     if (e.key === "ArrowLeft") leftArrow.click();
   });
 
   // Sync nav on scroll
-  timeline.addEventListener("scroll", function () {
+  scroller.addEventListener("scroll", function () {
     let idx = 0;
     items.forEach((item, i) => {
-      if (timeline.scrollLeft >= item.offsetLeft - timeline.offsetLeft - 10) {
+      if (scroller.scrollLeft >= item.offsetLeft - scroller.offsetLeft - 10) {
         idx = i;
       }
     });
