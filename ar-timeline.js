@@ -28,20 +28,39 @@ document.addEventListener("DOMContentLoaded", () => {
   function scrollToItem(idx, smooth = true) {
     const item = items[idx];
     if (!item) return;
+    const scroller = document.querySelector('.timeline-content');
     const scrollerRect = scroller.getBoundingClientRect();
     const itemRect = item.getBoundingClientRect();
-    const scrollLeft =
-      item.offsetLeft -
-      scroller.offsetLeft -
-      scrollerRect.width / 2 +
-      itemRect.width / 2;
-    scroller.scrollTo({
-      left: scrollLeft,
-      behavior: smooth ? "smooth" : "auto",
-    });
-    updateNav(idx);
-  }
+  // Calculate scroll so item is centered
+  const scrollLeft =
+    item.offsetLeft
+    - scroller.offsetLeft
+    - (scrollerRect.width / 2)
+    + (itemRect.width / 2);
 
+  scroller.scrollTo({
+    left: scrollLeft,
+    behavior: smooth ? "smooth" : "auto",
+  });
+  updateNav(idx);
+}
+  function updateGradientEdges() {
+  const scroller = document.querySelector('.timeline-content');
+  scroller.classList.toggle('at-start', scroller.scrollLeft === 0);
+  scroller.classList.toggle(
+    'at-end',
+    Math.ceil(scroller.scrollLeft + scroller.offsetWidth) >= scroller.scrollWidth
+  );
+}
+scroller.addEventListener('scroll', updateGradientEdges);
+updateGradientEdges();
+// Only create dots for non-buffer cards
+  const realItems = Array.from(items).filter(item => !item.classList.contains('timeline-buffer'));
+realItems.forEach(() => {
+  const dot = document.createElement('div');
+  dot.className = 'timeline-dot';
+  dotsContainer.appendChild(dot);
+});
   // Dot click
   dots.forEach((dot, idx) => {
     dot.addEventListener("click", () => scrollToItem(idx));
